@@ -1531,7 +1531,10 @@ static int inode_doinit_with_dentry(struct inode *inode, struct dentry *opt_dent
 		sid = sbsec->sid;
 
 		/* Try to obtain a transition SID. */
-		rc = security_transition_sid(task_sid, sid, sclass, NULL, &sid);
+
+		rc = security_transition_sid(isec->task_sid, sbsec->sid,
+					     isec->sclass, NULL, &sid);
+
 		if (rc)
 			goto out;
 		break;
@@ -1563,8 +1566,10 @@ static int inode_doinit_with_dentry(struct inode *inode, struct dentry *opt_dent
 			 * could be used again by userspace.
 			 */
 			if (!dentry)
-				goto out_invalid;
-			rc = selinux_genfs_get_sid(dentry, sclass,
+
+				goto out_unlock;
+			rc = selinux_genfs_get_sid(dentry, isec->sclass,
+
 						   sbsec->flags, &sid);
 			dput(dentry);
 			if (rc)
@@ -1585,7 +1590,9 @@ out:
 	}
 
 out_unlock:
-	spin_unlock(&isec->lock);
+
+	mutex_unlock(&isec->lock);
+
 	return rc;
 
 out_invalid:
