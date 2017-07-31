@@ -89,4 +89,9 @@ $(obj)/lkdtm_rodata_objcopy.o: $(obj)/lkdtm_rodata.o FORCE
 	$(call if_changed,objcopy)
 
 obj-$(CONFIG_OKL4_LINK_SHBUF)    += okl4-link-shbuf.o
+
 obj-$(CONFIG_MACH_XIAOMI_SANTONI)	+= hardware_info.o
+
+obj-$(CONFIG_NFC_CARILLON)	+= carillon/
+obj-$(CONFIG_FORCE_FAST_CHARGE) += fastchg.o
+
