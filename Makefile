@@ -1,6 +1,6 @@
 VERSION = 4
 PATCHLEVEL = 9
-SUBLEVEL = 268
+SUBLEVEL = 320
 EXTRAVERSION =
 NAME = Roaring Lionus
 
@@ -806,14 +806,16 @@ KBUILD_CFLAGS += $(call cc-disable-warning, tautological-compare)
 # See modpost pattern 2
 KBUILD_CFLAGS += $(call cc-option, -mno-global-merge,)
 KBUILD_CFLAGS += $(call cc-option, -fcatch-undefined-behavior)
-else
+endif
 
 # These warnings generated too much noise in a regular build.
 # Use make W=1 to enable them (see scripts/Makefile.extrawarn)
 KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
+
 endif
 # transport MTK_CDEFS ( mtk compile macros ) to .c for compile
 KBUILD_CFLAGS += $(MTK_CDEFS)
+
 
 KBUILD_CFLAGS += $(call cc-disable-warning, unused-const-variable)
 ifdef CONFIG_FRAME_POINTER
@@ -1870,7 +1872,7 @@ ifneq ($(cmd_files),)
   include $(cmd_files)
 endif
 
-endif	# skip-makefile
+# skip-makefile
 
 PHONY += FORCE
 FORCE:
