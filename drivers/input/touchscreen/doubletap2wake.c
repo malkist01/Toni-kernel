@@ -321,10 +321,6 @@ static ssize_t dt2w_doubletap2wake_dump(struct device *dev,
 		case DT2W_OFF :
 		case DT2W_ON :
 		case DT2W_FS :
-			if (dt2w_scr_suspended) {
-				pr_info("[cmdline_dt2w]: DoubleTap2Wake isn't changed because the screen is off.'\n");
-				return count;
-			}
 			dt2w_switch = new_dt2w_switch;
 			/* through 'adb shell' or by other means, if the toggle
 			 * is done several times, 0-to-1, 1-to-0, we need to
