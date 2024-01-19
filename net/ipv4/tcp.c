@@ -679,7 +679,9 @@ static void tcp_push(struct sock *sk, int flags, int mss_now,
 		/* avoid atomic op if TSQ_THROTTLED bit is already set */
 		if (!test_bit(TSQ_THROTTLED, &sk->sk_tsq_flags)) {
 			NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPAUTOCORKING);
+
 			set_bit(TSQ_THROTTLED, &sk->sk_tsq_flags);
+
 		}
 		/* It is possible TX completion already happened
 		 * before we set TSQ_THROTTLED.
