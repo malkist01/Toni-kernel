@@ -1,5 +1,5 @@
 /* Copyright (c) 2017-2018,2020, The Linux Foundation. All rights reserved.
- * Copyright (c) 2022-2023, Qualcomm Innovation Center, Inc. All rights reserved.
+ * Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -784,10 +784,11 @@ int a6xx_preemption_init(struct adreno_device *adreno_dev)
 	}
 
 	/*
-	 * First 8 dwords of the preemption scratch buffer is used to store the
-	 * address for CP to save/restore VPC data. Reserve 11 dwords in the
-	 * preemption scratch buffer from index KMD_POSTAMBLE_IDX for KMD
-	 * postamble pm4 packets
+	 * First 28 dwords of the device scratch buffer are used to store
+	 * shadow rb data. Reserve 11 dwords in the device scratch buffer
+	 * from SCRATCH_POSTAMBLE_OFFSET for KMD postamble pm4 packets.
+	 * This should be in *device->scratch* so that userspace cannot
+	 * access it.
 	 */
 
 	if (!adreno_dev->perfcounter) {
