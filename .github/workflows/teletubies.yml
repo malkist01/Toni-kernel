@@ -1,23 +1,27 @@
-name: C/C++ CI
-
+name: teletubies-main
 on:
-  push:
-    branches: [ "Teletubies" ]
-  pull_request:
-    branches: [ "Teletubies" ]
+   workflow_dispatch:
 
+env:
+  TZ: Asia/Jakarta
+  
 jobs:
-  build:
+  teletubiesbuild:
+       runs-on: ubuntu-22.04
 
-    runs-on: ubuntu-latest
+       steps:
+       - name: Creating env!
+         uses: actions/checkout@v2
 
-    steps:
-    - uses: actions/checkout@v4
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+       - name: Setting up env!
+         run: |
+          git clone https://github.com/akhilnarang/scripts x
+          cd x/setup && bash android_build_env.sh
+       - name: Building Kernel...
+         run: |
+             chmod +x build.sh && bash build.sh
+             shell: bash
+             env:
+              CHATID: ${{ secrets.CHAT_ID }}
+              API_BOT: ${{ secrets.BOT_API }}
+
