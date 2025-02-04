@@ -17,8 +17,6 @@
 #include <assert.h>
 #include <errno.h>
 
-#include "current_stack_pointer.h"
-
 #ifndef SS_AUTODISARM
 #define SS_AUTODISARM  (1U << 31)
 #endif
@@ -38,6 +36,8 @@ void my_usr1(int sig, siginfo_t *si, void *u)
 	int err;
 	stack_t stk;
 	struct stk_data *p;
+
+	register unsigned long sp asm("sp");
 
 	if (sp < (unsigned long)sstack ||
 			sp >= (unsigned long)sstack + SIGSTKSZ) {
