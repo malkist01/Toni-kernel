@@ -213,7 +213,7 @@ static int __init save_microcode_in_initrd(void)
 	return -EINVAL;
 }
 
-void reload_early_microcode(unsigned int cpu)
+void reload_early_microcode(void)
 {
 	int vendor, family;
 
@@ -227,7 +227,7 @@ void reload_early_microcode(unsigned int cpu)
 		break;
 	case X86_VENDOR_AMD:
 		if (family >= 0x10)
-			reload_ucode_amd(cpu);
+			reload_ucode_amd();
 		break;
 	default:
 		break;
@@ -596,7 +596,7 @@ void microcode_bsp_resume(void)
 	if (uci->valid && uci->mc)
 		microcode_ops->apply_microcode(cpu);
 	else if (!uci->mc)
-		reload_early_microcode(cpu);
+		reload_early_microcode();
 }
 
 static struct syscore_ops mc_syscore_ops = {
