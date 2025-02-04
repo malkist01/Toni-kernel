@@ -68,7 +68,7 @@ AnyKernelbranch="master"
 HOSST="android-server"
 USEER="malkist"
 
-TOOLCHAIN="clang"
+TOOLCHAIN="gcc"
 
 # setup telegram env
 export BOT_BUILD_URL="https://api.telegram.org/bot$API_BOT/sendDocument"
@@ -106,7 +106,6 @@ if [ "$TOOLCHAIN" == gcc ]; then
 	fi
 	export PATH="$HOME/gcc64/bin:$HOME/gcc32/bin:$PATH"
 	export STRIP="$HOME/gcc64/aarch64-elf/bin/strip"
-	export KBUILD_COMPILER_STRING=$("$HOME"/gcc64/bin/aarch64-elf-gcc --version | head -n 1)
 elif [ "$TOOLCHAIN" == clang ]; then
 	if [ ! -d "$HOME/proton_clang" ]
 	then
@@ -115,7 +114,6 @@ elif [ "$TOOLCHAIN" == clang ]; then
 	fi
 	export PATH="$HOME/proton_clang/bin:$PATH"
 	export STRIP="$HOME/proton_clang/aarch64-linux-gnu/bin/strip"
-	export KBUILD_COMPILER_STRING=$("$HOME"/proton_clang/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
 fi
 
 # Setup build process
