@@ -1,6 +1,6 @@
--#!/bin/bash
+#!/bin/bash
 #
-# Copyright (C) 2020 Fox kernel project
+# Copyright (C) 2025 Teletubies kernel project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ AnyKernelbranch="master"
 HOSST="android-server"
 USEER="malkist"
 
-TOOLCHAIN="gcc"
+TOOLCHAIN="clang"
 
 # setup telegram env
 export BOT_BUILD_URL="https://api.telegram.org/bot$API_BOT/sendDocument"
