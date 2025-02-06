@@ -1,4 +1,4 @@
-#!/bin/bash
+-#!/bin/bash
 #
 # Copyright (C) 2020 Fox kernel project
 #
@@ -101,11 +101,11 @@ if [ "$TOOLCHAIN" == gcc ]; then
 	if [ ! -d "$HOME/gcc64" ] && [ ! -d "$HOME/gcc32" ]
 	then
 		echo -e "$green << cloning gcc from arter >> \n $white"
-		git clone --depth=1 https://github.com/mvaisakh/gcc-arm64 "$HOME"/gcc64
-		git clone --depth=1 https://github.com/mvaisakh/gcc-arm "$HOME"/gcc32
+		git clone --depth=1 -b lineage-19.1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9.git  "$HOME"/gcc64
+		git clone --depth=1 -b lineage-19.1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9.git "$HOME"/gcc32
 	fi
 	export PATH="$HOME/gcc64/bin:$HOME/gcc32/bin:$PATH"
-	export STRIP="$HOME/gcc64/aarch64-elf/bin/strip"
+	export STRIP="$HOME/gcc64/aarch64-linux-android/bin/strip"
 elif [ "$TOOLCHAIN" == clang ]; then
 	if [ ! -d "$HOME/proton_clang" ]
 	then
@@ -124,21 +124,15 @@ Start=$(date +"%s")
 if [ "$TOOLCHAIN" == clang  ]; then
 	echo clang
 	make -j$(nproc --all) O=out \
-        ARCH=arm64 \
-        LLVM=1 \
-        LLVM_IAS=1 \
-        AR=llvm-ar \
-        NM=llvm-nm \
-        LD=ld.lld \
-        OBJCOPY=llvm-objcopy \
-        OBJDUMP=llvm-objdump \
-        STRIP=llvm-strip \
-        READELF=llvm-readelf \
-        HOSTCC=clang \
-        HOSTCXX=clang++ \
-        HOSTAR=llvm-ar \
-        HOSTLD=ld.lld \
-        CC="ccache clang" \
+                      ARCH=arm64 \
+					  CC=clang \
+					  LD=ld.lld \
+					  AR=llvm-ar \
+					  AS=llvm-as \
+					  NM=llvm-nm \
+					  OBJCOPY=llvm-objcopy \
+					  OBJDUMP=llvm-objdump \
+					  STRIP=llvm-strip \
 	                      CROSS_COMPILE=aarch64-linux-gnu- \
 	                      CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
 	                      CONFIG_DEBUG_SECTION_MISMATCH=y \
