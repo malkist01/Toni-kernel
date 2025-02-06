@@ -141,8 +141,8 @@ elif [ "$TOOLCHAIN" == gcc  ]; then
 	echo gcc
 	make -j$(nproc --all) O=out \
 			      ARCH=arm64 \
-			      CROSS_COMPILE=aarch64-elf- \
-			      CROSS_COMPILE_ARM32=arm-eabi- 2>&1 | tee error.log
+			      CROSS_COMPILE=linux-android- \
+			      CROSS_COMPILE_ARM32=arm-linux-androideabi- 2>&1 | tee error.log
 fi
 
 End=$(date +"%s")
