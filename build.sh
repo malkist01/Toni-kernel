@@ -1,4 +1,4 @@
--#!/bin/bash
+#!/bin/bash
 #
 # Copyright (C) 2020 Fox kernel project
 #
@@ -68,7 +68,7 @@ AnyKernelbranch="master"
 HOSST="android-server"
 USEER="malkist"
 
-TOOLCHAIN="gcc"
+TOOLCHAIN="clang"
 
 # setup telegram env
 export BOT_BUILD_URL="https://api.telegram.org/bot$API_BOT/sendDocument"
