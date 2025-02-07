@@ -1,6 +1,6 @@
-#!/bin/bash
+-#!/bin/bash
 #
-# Copyright (C) 2025 Teletubies kernel project
+# Copyright (C) 2020 Fox kernel project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,47 +51,15 @@ if [[ ! -d "$MY_DIR" ]]; then MY_DIR="$PWD"; fi
 # USEER = build user
 #
 # TOOLCHAIN = the toolchain u want to use "gcc/clang"
-
-CHATID="-1002287610863"
-API_BOT="7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8"
-
-
 DEVICE="Redmi 4X"
 CODENAME="santoni"
 KERNEL_NAME="TeletubiesKernel"
-
 DEFCONFIG="teletubies_defconfig"
-
 AnyKernel="https://github.com/malkist01/anykernel.git"
 AnyKernelbranch="master"
-
 HOSST="android-server"
 USEER="malkist"
-
 TOOLCHAIN="clang"
-
-# setup telegram env
-export BOT_BUILD_URL="https://api.telegram.org/bot$API_BOT/sendDocument"
-
-tg_post_build() {
-        #Post MD5Checksum alongwith for easeness
-        MD5CHECK=$(md5sum "$1" | cut -d' ' -f1)
-
-        #Show the Checksum alongwith caption
-        curl --progress-bar -F document=@"$1" "$BOT_BUILD_URL" \
-        -F chat_id="$2" \
-        -F "disable_web_page_preview=true" \
-        -F "parse_mode=html" \
-        -F caption="$3 build finished in $(($Diff / 60)) minutes and $(($Diff % 60)) seconds | <b>MD5 Checksum : </b><code>$MD5CHECK</code>"
-}
-
-tg_error() {
-        curl --progress-bar -F document=@"$1" "$BOT_BUILD_URL" \
-        -F chat_id="$2" \
-        -F "disable_web_page_preview=true" \
-        -F "parse_mode=html" \
-        -F caption="$3Failed to build , check <code>error.log</code>"
-}
 
 # Now let's clone gcc/clang on HOME dir
 # And after that , the script start the compilation of the kernel it self
@@ -107,13 +75,13 @@ if [ "$TOOLCHAIN" == gcc ]; then
 	export PATH="$HOME/gcc64/bin:$HOME/gcc32/bin:$PATH"
 	export STRIP="$HOME/gcc64/aarch64-linux-android/bin/strip"
 elif [ "$TOOLCHAIN" == clang ]; then
-	if [ ! -d "$HOME/proton_clang" ]
+	if [ ! -d "$HOME/clang" ]
 	then
-		echo -e "$green << cloning proton clang >> \n $white"
-		git clone --depth=1 https://gitlab.com/kutemeikito/rastamod69-clang.git -b clang-20.0 "$HOME"/proton_clang
+		echo -e "$green << cloning clang >> \n $white"
+		git clone --depth=1 https://gitlab.com/kutemeikito/rastamod69-clang.git -b clang-20.0 "$HOME"/clang
 	fi
-	export PATH="$HOME/proton_clang/bin:$PATH"
-	export STRIP="$HOME/proton_clang/aarch64-linux-gnu/bin/strip"
+	export PATH="$HOME/clang/bin:$PATH"
+	export STRIP="$HOME/clang/aarch64-linux-gnu/bin/strip"
 fi
 
 # Setup build process
@@ -167,41 +135,26 @@ make O=out clean && make O=out mrproper
 make "$DEFCONFIG" O=out
 
 echo -e "$yellow << compiling the kernel >> \n $white"
-tg_post_msg "<code>Building Image.gz-dtb</code>" "$CHATID"
-
 build_kernel || error=true
 
 DATE=$(date +"%Y%m%d-%H%M%S")
 KERVER=$(make kernelversion)
 
-        if [ -f "$IMG" ]; then
-                echo -e "$green << Build completed in $(($Diff / 60)) minutes and $(($Diff % 60)) seconds >> \n $white"
-        else
-                echo -e "$red << Failed to compile the kernel , Check up to find the error >>$white"
-                tg_error "error.log" "$CHATID"
-                rm -rf out
-                rm -rf testing.log
-                rm -rf error.log
-                exit 1
-        fi
+if [ ! -f output/arch/arm64/boot/Image.gz-dtb ]; then
+    echo "HolyCrap, Compiling Failed"
+    curl -F chat_id="-1002287610863" -F text="HolyCrap, Compile Fail :(" https://api.telegram.org/bot7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8/sendMessage
 
-        if [ -f "$IMG" ]; then
-                echo -e "$green << cloning AnyKernel from your repo >> \n $white"
-                git clone "$AnyKernel" --single-branch -b "$AnyKernelbranch" zip
-                echo -e "$yellow << making kernel zip >> \n $white"
-                cp -r "$IMG" zip/
-                cd zip
-                mv Image.gz-dtb zImage
-                export ZIP="$KERNEL_NAME"-"$CODENAME"-"$DATE"
-                zip -r "$ZIP" *
-                curl -sLo zipsigner-3.0.jar https://raw.githubusercontent.com/Hunter-commits/AnyKernel/master/zipsigner-3.0.jar
-                java -jar zipsigner-3.0.jar "$ZIP".zip "$ZIP"-signed.zip		
-                tg_post_build "$ZIP"-signed.zip "$CHATID"
-                cd ..
-                rm -rf error.log
-                rm -rf out
-                rm -rf zip
-                rm -rf testing.log
-                exit
-        fi
+else 
+cp output/arch/arm64/boot/Image.gz-dtb AnyKernel2/zImage
+cd AnyKernel2
+rm -rf *.zip
+zip -r9 CrappyKernel-Liquor-${tanggal}.zip * -x README.md CrappyKernel-Liquor--${tanggal}.zip
+echo "Yeehaa Booooi, Compiling Success!"
+curl -F chat_id="-1002287610863" -F document=@"CrappyKernel-Liquor-${tanggal}.zip" https://api.telegram.org/bot757761074:AAFKxcBRT-hsNfyC0wXTH_GXJozT7yzflKU/sendDocument
+curl -F chat_id="-1002287610863" -F text="HolyCrap, Compile Success :)" https://api.telegram.org/bot757761074:AAFKxcBRT-hsNfyC0wXTH_GXJozT7yzflKU/sendMessage
+curl -F chat_id="-1002287610863" -F text="Whats New ?
+$(git log --oneline --decorate --color --pretty=%s --first-parent -3)" https://api.telegram.org/bot7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8/sendMessage
+
+fi
+curl -F chat_id="-1002287610863" -F sticker="CAADBQADZwADqZrmFoa87YicX2hwAg" https://api.telegram.org/bot7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8/sendSticker
     
