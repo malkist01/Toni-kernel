@@ -1,4 +1,4 @@
-#!/bin/bash
+-#!/bin/bash
 #
 # Copyright (C) 2020 Fox kernel project
 #
@@ -68,7 +68,7 @@ AnyKernelbranch="master"
 HOSST="android-server"
 USEER="malkist"
 
-TOOLCHAIN="clang"
+TOOLCHAIN="gcc"
 
 # setup telegram env
 export BOT_BUILD_URL="https://api.telegram.org/bot$API_BOT/sendDocument"
@@ -195,7 +195,15 @@ KERVER=$(make kernelversion)
                 export ZIP="$KERNEL_NAME"-"$CODENAME"-"$DATE"
                 zip -r "$ZIP" *
 echo "Yeehaa Booooi, Compiling Success!"
-curl -F chat_id="-1002287610863" -F document=@"Teletubies${tanggal}.zip" https://api.telegram.org/bot757761074:AAFKxcBRT-hsNfyC0wXTH_GXJozT7yzflKU/sendDocument
+    BOT_TOKEN="7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8"
+    CHAT_ID="1002287610863"
+
+    # URL API Telegram untuk mengunggah file
+    URL="https://api.telegram.org/bot$BOT_TOKEN/sendDocument"
+
+    # Kirim file dengan keterangan
+    curl -s -X POST "$URL" -F document=@"$ZIPNAME" -F chat_id="$CHAT_ID"
+    
 curl -F chat_id="-1002287610863" -F text="HolyCrap, Compile Success :)" https://api.telegram.org/bot757761074:AAFKxcBRT-hsNfyC0wXTH_GXJozT7yzflKU/sendMessage
 curl -F chat_id="-1002287610863" -F text="Whats New ?
 $(git log --oneline --decorate --color --pretty=%s --first-parent -3)" https://api.telegram.org/bot7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8/sendMessage
