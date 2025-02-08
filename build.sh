@@ -54,18 +54,6 @@ cdir()
 KERNEL_DIR="$(pwd)"
 BASEDIR="$(basename "$KERNEL_DIR")"
 
-# PATCH KERNELSU & RELEASE VERSION
-KSU=1
-RELEASE=L8
-if [ $KSU = 1 ]
-then
-        echo "CONFIG_KSU=y" >> arch/arm64/configs/"teletubies_defconfig"
-        echo "# CONFIG_KSU_DEBUG is not set" >> arch/arm64/config/"teletubies_defconfig"
-        echo "CONFIG_KSU_SUSFS=y" >> arch/arm64/configs/"teletubies_defconfig"
-        KSU_GIT_VERSION=$(cd KernelSU && git rev-list --count HEAD)
-        KERNELSU_VERSION=$(($KSU_GIT_VERSION + 10000 + 200))
-fi
-
 # Banner overwrite ( for kernel installation branding )
 # 1 = yes | 0 = no
 BANNER_OVERWRITE=1
