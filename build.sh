@@ -68,7 +68,7 @@ AnyKernelbranch="master"
 HOSST="android-server"
 USEER="malkist"
 
-TOOLCHAIN="clang"
+TOOLCHAIN="gcc"
 
 # setup telegram env
 export BOT_BUILD_URL="https://api.telegram.org/bot$API_BOT/sendDocument"
@@ -92,6 +92,7 @@ tg_error() {
         -F "parse_mode=html" \
         -F caption="$3Failed to build , check <code>error.log</code>"
 }
+
 # Now let's clone gcc/clang on HOME dir
 # And after that , the script start the compilation of the kernel it self
 # For regen the defconfig . use the regen.sh script
@@ -194,18 +195,13 @@ KERVER=$(make kernelversion)
                 export ZIP="$KERNEL_NAME"-"$CODENAME"-"$DATE"
                 zip -r "$ZIP" *
 echo "Yeehaa Booooi, Compiling Success!"
-    BOT_TOKEN="7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8"
-    CHAT_ID="1002287610863"
-
     # URL API Telegram untuk mengunggah file
-    URL="https://api.telegram.org/bot$BOT_TOKEN/sendDocument"
+    URL="https://api.telegram.org/bot$7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8/sendDocument"
 
     # Kirim file dengan keterangan
-    curl -s -X POST "$URL" -F document=@"$ZIPNAME" -F chat_id="$CHAT_ID"
+    curl -s -X POST "$URL" -F document=@"Teletubies" -F chat_id="-1002287610863"
     
 curl -F chat_id="-1002287610863" -F text="HolyCrap, Compile Success :)" https://api.telegram.org/bot757761074:AAFKxcBRT-hsNfyC0wXTH_GXJozT7yzflKU/sendMessage
-curl -F chat_id="-1002287610863" -F text="Whats New ?
-$(git log --oneline --decorate --color --pretty=%s --first-parent -3)" https://api.telegram.org/bot7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8/sendMessage
 fi
 curl -F chat_id="-1002287610863" -F sticker="CAADBQADZwADqZrmFoa87YicX2hwAg" https://api.telegram.org/bot7596553794:AAGoeg4VypmUfBqfUML5VWt5mjivN5-3ah8/sendSticker
                 cd ..
