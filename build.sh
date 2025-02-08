@@ -20,7 +20,7 @@
 
 # Kernel building script
 WORKDIR="$(pwd)"
-KERNEL="$WORKDIR/aikernel"
+KERNEL="$WORKDIR"
 
 # Cloning Sources
 #git clone --single-branch --depth=1 https://github.com/Asyanx/sea_kernel_xiaomi_sm6225 -b sea-r-oss $KERNEL && cd $KERNEL
